@@ -267,7 +267,7 @@ public class ProductRequestServlet extends HttpServlet {
 		String view = "";
 		List<Product> products = new ArrayList<>();
 		List<Integer> kitProductIds = new ArrayList<>();
-		KitItem item = new KitItem();
+		
 		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 		Product product = new Product();
 		try {
@@ -287,6 +287,7 @@ public class ProductRequestServlet extends HttpServlet {
 
 			for (Product p : products) {
 				if ((!(kitProductIds.contains(p.getProductId()))) || (kitProductIds.isEmpty())) {
+					KitItem item = new KitItem();
 					item.setProduct(p);
 					item.setPrice(0.0);
 					item.setQuantity(0);
