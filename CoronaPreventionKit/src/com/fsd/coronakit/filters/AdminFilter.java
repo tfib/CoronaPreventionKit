@@ -43,9 +43,6 @@ public class AdminFilter implements Filter {
 		} else {
 			chain.doFilter(request, response);
 		}
-		if (((HttpServletResponse) response).getStatus() == 404) {
-			((HttpServletResponse) response).sendRedirect("notFound.jsp");
-		}
 
 	}
 
