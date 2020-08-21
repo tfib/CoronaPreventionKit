@@ -13,8 +13,6 @@
 	<h4>
 		<b> Order Summary: </b>
 	</h4>
-	<br>
-
 	<h4>
 		<b>User Details:</b>
 	</h4>

@@ -21,7 +21,7 @@ import com.fsd.coronakit.service.ProductServiceImpl;
  * Servlet implementation class ProductRequestServlet
  */
 @WebServlet({ "/newProductSave", "/doListProducts", "/doEdit", "/editSave", "/deleteProduct", "/logout", "/adminLogin",
-		"/orderConfirmation", "/userDetailsSave", "/showKit", "/calculateTotals", "/addToKit" })
+		"/orderConfirmation", "/userDetailsSave", "/showKit", "/calculateTotals", "/addToKit", "/placeOrder" })
 public class ProductRequestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ProductServiceImpl productServiceImpl;
@@ -83,13 +83,16 @@ public class ProductRequestServlet extends HttpServlet {
 			view = userDetailsSave(request, response);
 			break;
 		case "/showKit":
-			view = getSelectedList(request, response);
+			view = getSelectedProductList(request, response);
 			break;
 		case "/calculateTotals":
 			view = calculateTotal(request, response);
 			break;
 		case "/addToKit":
-			view = getProduct(request, response);
+			view = addProductToKit(request, response);
+			break;
+		case "/placeOrder":
+			view = placeKitOrder(request, response);
 			break;
 		default:
 		}
@@ -212,7 +215,7 @@ public class ProductRequestServlet extends HttpServlet {
 			if ((request.getParameter("username").equals("admin"))
 					&& (request.getParameter("password").equals("admin"))) {
 				session.setAttribute("isAdmin", "true");
-				view = "welcomeAdmin.jsp";
+				view = "/doListProducts";
 			} else {
 				request.setAttribute("message", "Incorrect User Name or Password");
 				view = "index.jsp";
@@ -260,18 +263,38 @@ public class ProductRequestServlet extends HttpServlet {
 		return view;
 	}
 
-	private String getSelectedList(HttpServletRequest request, HttpServletResponse response) {
+	private String getSelectedProductList(HttpServletRequest request, HttpServletResponse response) {
 		String view = "";
 		List<Product> products = new ArrayList<>();
+		List<Integer> kitProductIds = new ArrayList<>();
+		KitItem item = new KitItem();
 		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 		Product product = new Product();
 		try {
+			List<KitItem> items = (List<KitItem>) (request.getSession().getAttribute("kititems"));
 			List<Integer> selectedIds = (List<Integer>) (request.getSession().getAttribute("selectedproductids"));
 			for (int i = 0; i < selectedIds.size(); i++) {
 				product = productServiceImpl.validateAndGetProduct(selectedIds.get(i));
 				products.add(product);
 			}
-			request.getSession().setAttribute("selectedproducts", products);
+			if (items == null || items.isEmpty()) {
+				items = new ArrayList<KitItem>();
+			} else {
+				for (KitItem KitItem : items) {
+					kitProductIds.add(KitItem.getProduct().getProductId());
+				}
+			}
+
+			for (Product p : products) {
+				if ((!(kitProductIds.contains(p.getProductId()))) || (kitProductIds.isEmpty())) {
+					item.setProduct(p);
+					item.setPrice(0.0);
+					item.setQuantity(0);
+					items.add(item);
+				}
+			}
+
+			request.getSession().setAttribute("kititems", items);
 			view = "showkit.jsp";
 		} catch (CoronaException e) {
 			request.setAttribute("error", e.getMessage());
@@ -283,24 +306,41 @@ public class ProductRequestServlet extends HttpServlet {
 	private String calculateTotal(HttpServletRequest request, HttpServletResponse response) {
 		String view = "";
 		double totalPrice = 0.0;
-		List<KitItem> items = new ArrayList<>();
+		List<KitItem> toBeRemoved = new ArrayList<KitItem>();
+		List<Integer> kitProductIds = new ArrayList<>();
 		try {
-			List<Product> selectedProducts = (List<Product>) (request.getSession().getAttribute("selectedproducts"));
-			for (Product p : selectedProducts) {
-				double value = p.getPcost()
-						* Integer.parseInt(request.getParameter("quantityOfProduct" + p.getProductId()));
-				if (value == 0.0) {
-					continue;
+			List<KitItem> items = (List<KitItem>) (request.getSession().getAttribute("kititems"));
+			if (items == null || items.isEmpty()) {
+				items = new ArrayList<KitItem>();
+			} else {
+				for (KitItem p : items) {
+					double value = p.getProduct().getPcost() * Integer
+							.parseInt(request.getParameter("quantityOfProduct" + p.getProduct().getProductId()));
+					if (value == 0.0) {
+						toBeRemoved.add(p);
+						continue;
+					}
+					totalPrice += value;
+					p.setPrice(value);
+					p.setQuantity(Integer
+							.parseInt(request.getParameter("quantityOfProduct" + p.getProduct().getProductId())));
+					kitProductIds.add(p.getProduct().getProductId());
 				}
-				KitItem item = new KitItem();
-				totalPrice += value;
-				item.setPrice(value);
-				item.setProduct(p);
-				item.setQuantity(Integer.parseInt(request.getParameter("quantityOfProduct" + p.getProductId())));
-				items.add(item);
+				if (!toBeRemoved.isEmpty()) {
+					items.removeAll(toBeRemoved);
+				}
 			}
-			request.getSession().setAttribute("kititems", items);
-			request.setAttribute("Message", "Kit Items Saved");
+			List<Integer> selectedProductIds = (List<Integer>) request.getSession().getAttribute("selectedproductids");
+			selectedProductIds.retainAll(kitProductIds);
+			if (items.size() == 0) {
+				request.getSession().setAttribute("kititems", null);
+				request.setAttribute("Message", "Kit is Empty");
+				request.getSession().setAttribute("selectedproductids", null);
+			} else {
+				request.getSession().setAttribute("kititems", items);
+				request.setAttribute("Message", "Kit Items Saved");
+				request.getSession().setAttribute("selectedproductids", selectedProductIds);
+			}
 			request.getSession().setAttribute("total", totalPrice);
 			view = "showkit.jsp";
 		} catch (Exception e) {
@@ -312,7 +352,7 @@ public class ProductRequestServlet extends HttpServlet {
 
 	}
 
-	private String getProduct(HttpServletRequest request, HttpServletResponse response) {
+	private String addProductToKit(HttpServletRequest request, HttpServletResponse response) {
 		String view = "";
 		Product product = new Product();
 		try {
@@ -326,6 +366,20 @@ public class ProductRequestServlet extends HttpServlet {
 			session.setAttribute("selectedproductids", selectedProductIds);
 			view = "showProductsToAdd.jsp";
 		} catch (CoronaException e) {
+			request.setAttribute("error", e.getMessage());
+			view = "error.jsp";
+		}
+		return view;
+	}
+
+	private String placeKitOrder(HttpServletRequest request, HttpServletResponse response) {
+		String view = "";
+		try {
+			if (request.getSession().getAttribute("total") == null) {
+				request.getSession().setAttribute("total", "0");
+			}
+			view = "placeOrder.jsp";
+		} catch (Exception e) {
 			request.setAttribute("error", e.getMessage());
 			view = "error.jsp";
 		}

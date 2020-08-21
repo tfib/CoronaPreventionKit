@@ -7,7 +7,7 @@
 <jsp:include page="header.jsp"></jsp:include>
 </head>
 <body>
-
+&nbsp;&nbsp;&nbsp;
 	<a href="newUser.jsp"> Click here to proceed as Visitor </a>
 	<br>
 	<br>

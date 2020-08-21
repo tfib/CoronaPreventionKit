@@ -55,7 +55,7 @@
 	</form>
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<form action="placeOrder.jsp">
+	<form action="placeOrder">
 		<button>Place Order</button>
 	</form>
 </body>

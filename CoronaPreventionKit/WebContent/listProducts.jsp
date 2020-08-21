@@ -10,14 +10,18 @@
 </head>
 <body>
 
-	<p>
-		<a href="welcomeAdmin.jsp">Go To Admin Welcome Page</a>
-	</p> 
+	<h3>
+		<b>Welcome Admin!!!</b>
+	</h3>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+	<a href="newProduct.jsp">Create a New Product</a>
 	<br>
 	<h4>
 		<b> Products List: </b>
 	</h4>
 	<br>
+
 	<c:choose>
 		<c:when test="${ products==null || products.isEmpty() }">
 			<h4>No Products Available</h4>

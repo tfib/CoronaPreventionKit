@@ -17,36 +17,36 @@
 	</h4>
 	<br>
 	<form action="calculateTotals">
-		<c:choose>
-			<c:when
-				test="${selectedproducts==null || selectedproducts.isEmpty() }">
-				<h4>No Products Selected</h4>
-			</c:when>
-			<c:otherwise>
-				<table border="1" cellspacing="5px" cellpadding="5px">
-					<tr>
-						<th>Product Id</th>
-						<th>Product Name</th>
-						<th>Product Cost</th>
-						<th>Description</th>
-						<th>Quantity</th>
-					</tr>
-					<c:forEach items="${selectedproducts}" var="product">
-						<tr>
-							<td>${product.productId}</td>
-							<td>${product.pName}</td>
-							<td>${product.pcost}</td>
-							<td>${product.pDescription}</td>
-							<td><input type="text"
-								name="quantityOfProduct${product.productId}"
-								pattern="[0-9]+" required></td>
-						</tr>
-					</c:forEach>
+				<c:choose>
+					<c:when test="${kititems==null || kititems.isEmpty() }">
+					<h4>No Products Selected</h4>
+					</c:when>
+					<c:otherwise>
+						<table border="1" cellspacing="5px" cellpadding="5px">
+							<tr>
+								<th>Product Id</th>
+								<th>Product Name</th>
+								<th>Product Cost</th>
+								<th>Description</th>
+								<th>Quantity</th>
+							</tr>
+							<c:forEach items="${kititems}" var="item">
+								<tr>
+									<td>${item.product.getProductId()}</td>
+									<td>${item.product.getpName()}</td>
+									<td>${item.product.getPcost()}</td>
+									<td>${item.product.getpDescription()}</td>
+									<td><input type="text"
+										name="quantityOfProduct${item.product.productId}"
+										value="${item.quantity}" pattern="[0-9]+" required></td>
+								</tr>
+							</c:forEach>
 
-				</table>
-			</c:otherwise>
+						</table>
 
-		</c:choose>
+
+					</c:otherwise>
+				</c:choose>
 		<br>
 
 		<button>Save Items</button>
