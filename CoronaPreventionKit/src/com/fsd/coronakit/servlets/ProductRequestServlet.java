@@ -15,16 +15,20 @@ import com.fsd.coronakit.entity.KitItem;
 import com.fsd.coronakit.entity.Product;
 import com.fsd.coronakit.entity.User;
 import com.fsd.coronakit.exception.CoronaException;
+import com.fsd.coronakit.service.KitItemServiceImpl;
 import com.fsd.coronakit.service.ProductServiceImpl;
 
 /**
  * Servlet implementation class ProductRequestServlet
  */
+
 @WebServlet({ "/newProductSave", "/doListProducts", "/doEdit", "/editSave", "/deleteProduct", "/logout", "/adminLogin",
 		"/orderConfirmation", "/userDetailsSave", "/showKit", "/calculateTotals", "/addToKit", "/placeOrder" })
+
 public class ProductRequestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ProductServiceImpl productServiceImpl;
+	private KitItemServiceImpl kitItemServiceImpl;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -37,6 +41,7 @@ public class ProductRequestServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		productServiceImpl = new ProductServiceImpl();
+		kitItemServiceImpl = new KitItemServiceImpl();
 	}
 
 	/**
@@ -95,6 +100,7 @@ public class ProductRequestServlet extends HttpServlet {
 			view = placeKitOrder(request, response);
 			break;
 		default:
+
 		}
 
 		request.getRequestDispatcher(view).forward(request, response);
@@ -267,16 +273,13 @@ public class ProductRequestServlet extends HttpServlet {
 		String view = "";
 		List<Product> products = new ArrayList<>();
 		List<Integer> kitProductIds = new ArrayList<>();
-		
+
 		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 		Product product = new Product();
 		try {
 			List<KitItem> items = (List<KitItem>) (request.getSession().getAttribute("kititems"));
 			List<Integer> selectedIds = (List<Integer>) (request.getSession().getAttribute("selectedproductids"));
-			for (int i = 0; i < selectedIds.size(); i++) {
-				product = productServiceImpl.validateAndGetProduct(selectedIds.get(i));
-				products.add(product);
-			}
+
 			if (items == null || items.isEmpty()) {
 				items = new ArrayList<KitItem>();
 			} else {
@@ -284,17 +287,17 @@ public class ProductRequestServlet extends HttpServlet {
 					kitProductIds.add(KitItem.getProduct().getProductId());
 				}
 			}
-
-			for (Product p : products) {
-				if ((!(kitProductIds.contains(p.getProductId()))) || (kitProductIds.isEmpty())) {
-					KitItem item = new KitItem();
-					item.setProduct(p);
-					item.setPrice(0.0);
-					item.setQuantity(0);
-					items.add(item);
+			if (!(selectedIds == null || selectedIds.isEmpty())) {
+				for (int i = 0; i < selectedIds.size(); i++) {
+					product = productServiceImpl.validateAndGetProduct(selectedIds.get(i));
+					products.add(product);
+				}
+				for (Product p : products) {
+					if ((!(kitProductIds.contains(p.getProductId()))) || (kitProductIds.isEmpty())) {
+						items.add(kitItemServiceImpl.addItemToKit(p));
+					}
 				}
 			}
-
 			request.getSession().setAttribute("kititems", items);
 			view = "showkit.jsp";
 		} catch (CoronaException e) {
@@ -306,7 +309,6 @@ public class ProductRequestServlet extends HttpServlet {
 
 	private String calculateTotal(HttpServletRequest request, HttpServletResponse response) {
 		String view = "";
-		double totalPrice = 0.0;
 		List<KitItem> toBeRemoved = new ArrayList<KitItem>();
 		List<Integer> kitProductIds = new ArrayList<>();
 		try {
@@ -315,16 +317,12 @@ public class ProductRequestServlet extends HttpServlet {
 				items = new ArrayList<KitItem>();
 			} else {
 				for (KitItem p : items) {
-					double value = p.getProduct().getPcost() * Integer
-							.parseInt(request.getParameter("quantityOfProduct" + p.getProduct().getProductId()));
-					if (value == 0.0) {
+					p = kitItemServiceImpl.updatePrice(p, Integer
+							.parseInt(request.getParameter("quantityOfProduct" + p.getProduct().getProductId())));
+					if (p.getPrice() == 0.0) {
 						toBeRemoved.add(p);
 						continue;
 					}
-					totalPrice += value;
-					p.setPrice(value);
-					p.setQuantity(Integer
-							.parseInt(request.getParameter("quantityOfProduct" + p.getProduct().getProductId())));
 					kitProductIds.add(p.getProduct().getProductId());
 				}
 				if (!toBeRemoved.isEmpty()) {
@@ -332,7 +330,9 @@ public class ProductRequestServlet extends HttpServlet {
 				}
 			}
 			List<Integer> selectedProductIds = (List<Integer>) request.getSession().getAttribute("selectedproductids");
-			selectedProductIds.retainAll(kitProductIds);
+			if (!(selectedProductIds == null || selectedProductIds.isEmpty())) {
+				selectedProductIds.retainAll(kitProductIds);
+			}
 			if (items.size() == 0) {
 				request.getSession().setAttribute("kititems", null);
 				request.setAttribute("Message", "Kit is Empty");
@@ -342,7 +342,6 @@ public class ProductRequestServlet extends HttpServlet {
 				request.setAttribute("Message", "Kit Items Saved");
 				request.getSession().setAttribute("selectedproductids", selectedProductIds);
 			}
-			request.getSession().setAttribute("total", totalPrice);
 			view = "showkit.jsp";
 		} catch (Exception e) {
 			request.setAttribute("error", e.getMessage());
@@ -376,9 +375,10 @@ public class ProductRequestServlet extends HttpServlet {
 	private String placeKitOrder(HttpServletRequest request, HttpServletResponse response) {
 		String view = "";
 		try {
-			if (request.getSession().getAttribute("total") == null) {
-				request.getSession().setAttribute("total", "0");
-			}
+			List<KitItem> kitItems = (List<KitItem>) request.getSession().getAttribute("kititems");
+			if (kitItems == null)
+				kitItems = new ArrayList<>();
+			request.getSession().setAttribute("total", kitItemServiceImpl.getTotalPrice(kitItems));
 			view = "placeOrder.jsp";
 		} catch (Exception e) {
 			request.setAttribute("error", e.getMessage());

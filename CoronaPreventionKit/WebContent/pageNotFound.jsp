@@ -8,15 +8,10 @@
 </head>
 <body>
 	<h3>
-		<b>Welcome Admin!!!</b>
+		<b>Page is not available.</b>
 	</h3>
 	<br>
-	<p>
-		<a href="doListProducts">View Existing Products </a>
-	</p>
-	<P>
-		<a href="newProduct.jsp">Create a New Product</a>
-	</P>
+	
 
 </body>
 <footer>
