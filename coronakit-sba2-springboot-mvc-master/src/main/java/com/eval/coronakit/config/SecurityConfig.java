@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin().loginPage("/custom-login").loginProcessingUrl("/validate").permitAll()
 				.defaultSuccessUrl("/home").failureUrl("/custom-login?error=true");
 		http.logout().logoutSuccessUrl("/");
-		http.exceptionHandling().accessDeniedPage("/views/error-page.jsp.jsp");
+		http.exceptionHandling().accessDeniedPage("/custom-error");
 
 	}
 
