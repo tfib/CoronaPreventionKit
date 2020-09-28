@@ -12,7 +12,6 @@ public class CoronaKit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@NotBlank(message = "Address cannot be blank")
 	private String deliveryAddress;
 	private String orderDate;
 	private int totalAmount;

@@ -2,13 +2,18 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags/form"  prefix="spring-form"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<jsp:include page="${pageContext.request.contextPath}/header" />
 </head>
 <body>
+
+<jsp:include page="${pageContext.request.contextPath}/header" />
+
+<spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
+<input type="submit" value="Logout">
+</spring-form:form>
 
 	<h3>Add New Product</h3>
 
@@ -45,6 +50,6 @@
 
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/footer" />
 </footer>
 </html>

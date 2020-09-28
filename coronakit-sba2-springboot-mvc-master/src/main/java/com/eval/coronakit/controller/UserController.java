@@ -1,19 +1,17 @@
 package com.eval.coronakit.controller;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.text.DateFormatter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eval.coronakit.entity.CoronaKit;
@@ -66,22 +64,22 @@ public class UserController {
 
 	@RequestMapping("/checkout")
 	public String checkout(Model model) {
+		model.addAttribute("coronakit", new CoronaKit());
 		model.addAttribute("kitItems", kitDetails);
 		return "checkout-address";
 	}
 
 	@RequestMapping("/finalize")
-	public String finalizeOrder(String address, Model model) {
+	public String finalizeOrder(@RequestParam String address, Model model) {
 		int amount = 0;
 		for (KitDetail k : kitDetails) {
 			amount += k.getAmount();
 			kitDetailService.addKitItem(k);
 		}
 		LocalDate localDate = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 		String dateString = localDate.format(formatter);
-		coronaKitService
-				.saveKit(new CoronaKit(1, model.getAttribute("deliveryAddress").toString(), dateString, amount));
+		coronaKitService.saveKit(new CoronaKit(1, address, dateString, amount));
 		model.addAttribute("TotalAmount", amount);
 		model.addAttribute("deliveryAddress", coronaKitService.getKitById(1).getDeliveryAddress());
 		model.addAttribute("kitItems", kitDetails);

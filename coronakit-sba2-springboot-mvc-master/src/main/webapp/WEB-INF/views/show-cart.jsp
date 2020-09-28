@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-
+<%@taglib uri="http://www.springframework.org/tags/form"  prefix="spring-form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +9,10 @@
 </head>
 <body>
 
+<spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
+<input type="submit" value="Logout">
+</spring-form:form>
+<br> <br>
 
 	<a href="${pageContext.request.contextPath}/user/show-list">List
 		All Products</a>
@@ -42,6 +46,7 @@
 							<td>${item.getAmount()}</td>
 							<td><a
 								href="${pageContext.request.contextPath}/user/delete/${item.getId()}">
+								Delete
 							</a></td>
 						</tr>
 					</c:forEach>

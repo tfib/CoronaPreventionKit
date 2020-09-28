@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Corona Prevention Kit Portal</title>
+
 </head>
 <body>
-
+<h2>Corona Prevention Kit Portal</h2>
 </body>
 </html>

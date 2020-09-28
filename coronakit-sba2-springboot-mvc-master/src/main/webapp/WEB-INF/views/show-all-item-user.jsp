@@ -2,12 +2,17 @@
 	pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@taglib uri="http://www.springframework.org/tags/form"  prefix="spring-form"%>
 <!DOCTYPE html>
 <html>
 <head>
 
 </head>
 <body>
+<spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
+<input type="submit" value="Logout">
+</spring-form:form>
+
 <jsp:include page="${pageContext.request.contextPath}/header" />
 
 	<br>

@@ -3,10 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<jsp:include page="${pageContext.request.contextPath}/header"></jsp:include>
 </head>
 <body>
+<jsp:include page="${pageContext.request.contextPath}/header" />
 	<h1>Welcome to Corona-Kit Home...</h1>
 	<hr />
 	<a href="${pageContext.request.contextPath}/custom-login"><input
@@ -14,6 +13,6 @@
 	<hr />
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/footer" />
 </footer>
 </html>

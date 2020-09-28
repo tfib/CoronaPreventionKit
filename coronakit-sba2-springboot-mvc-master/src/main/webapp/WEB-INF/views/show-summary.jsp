@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@taglib uri="http://www.springframework.org/tags/form"
+	prefix="spring-form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +10,17 @@
 </head>
 <body>
 
-<br>
+	<spring-form:form action="${pageContext.request.contextPath}/logout"
+		method="POST">
+		<input type="submit" value="Logout">
+	</spring-form:form>
+
+	<br>
 	<h4>
 		<b> Order Summary: </b>
 	</h4>
 	<br>
-		<label>Shipping Address: ${deliveryAddress} </label>
+	<label>Shipping Address: ${deliveryAddress} </label>
 	<br>
 	<c:choose>
 		<c:when test="${kitItems==null || kitItems.isEmpty() }">

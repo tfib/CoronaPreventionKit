@@ -10,6 +10,10 @@
 </head>
 <body>
 
+<spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
+<input type="submit" value="Logout">
+</spring-form:form>
+
 <h2>Hello <security:authentication property="principal.username"/></h2>
 <br/>
 

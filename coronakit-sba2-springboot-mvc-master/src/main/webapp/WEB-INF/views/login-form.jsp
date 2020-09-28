@@ -10,6 +10,9 @@
 
 </head>
 <body>
+
+<h1> Enter your Credentials</h1> <br> <br>
+
 	<core:if test="${param.error != null}">
 		<i>
 			Invalid Credentials!!!
