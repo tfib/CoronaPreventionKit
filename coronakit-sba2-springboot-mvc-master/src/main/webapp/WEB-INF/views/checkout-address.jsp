@@ -7,12 +7,15 @@
 <meta charset="ISO-8859-1">
 </head>
 <body>
+
+<jsp:include page="${pageContext.request.contextPath}/header" />
+
 	<a href="${pageContext.request.contextPath}/user/show-kit">Show Kit
 		Details</a>
 	<br>
 	<br>
 
-	<form:form action="orderConfirmation" action="/finalize">
+	<form:form action="/finalize">
 		<form:label path="deliveryAddress">
 			<h4>
 				<b>Please enter the complete shipping address:</b>

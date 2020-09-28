@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="${pageContext.request.contextPath}/header"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/header" />
 </head>
 <body>
 

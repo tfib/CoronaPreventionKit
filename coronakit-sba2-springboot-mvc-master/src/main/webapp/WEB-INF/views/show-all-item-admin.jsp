@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="${pageContext.request.contextPath}/header"></jsp:include>
+
 </head>
 <body>
-
+<jsp:include page="${pageContext.request.contextPath}/header" />
 	<a href="${pageContext.request.contextPath}/admin/product-entry">
 		Add New Product</a>
 
@@ -46,6 +46,6 @@
 
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/footer" />
 </footer>
 </html>

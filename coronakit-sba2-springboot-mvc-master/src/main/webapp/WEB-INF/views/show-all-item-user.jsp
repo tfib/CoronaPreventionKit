@@ -8,7 +8,7 @@
 
 </head>
 <body>
-
+<jsp:include page="${pageContext.request.contextPath}/header" />
 
 	<br>
 	<h4>
@@ -34,7 +34,7 @@
 						<td>${product.productName}</td>
 						<td>${product.cost}</td>
 						<td>${product.productDescription}</td>
-						<td><a href="/add-to-cart/${product.productId}">Add To
+						<td><a href="${pageContext.request.contextPath}/user/add-to-cart/${product.id}">Add To
 								Kit</a></td>
 					</tr>
 				</c:forEach>

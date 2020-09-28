@@ -6,15 +6,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="${pageContext.request.contextPath}/header"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/header" />
 </head>
 <body>
 
 <h2>Hello <security:authentication property="principal.username"/></h2>
 <br/>
-<spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
-<input type="submit" value="Logout">
-</spring-form:form>
+
 <hr/>
 <h1>Welcome to Corona Kit Dashboard!!!</h1>
 
@@ -31,6 +29,6 @@
 
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/footer" />
 </footer>
 </html>

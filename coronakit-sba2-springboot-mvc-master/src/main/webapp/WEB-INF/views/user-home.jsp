@@ -6,6 +6,9 @@
 </head>
 <body>
 <jsp:include page="/header" />
+<spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
+<input type="submit" value="Logout">
+</spring-form:form>
 
 <h1>This is User dashboard</h1>
 

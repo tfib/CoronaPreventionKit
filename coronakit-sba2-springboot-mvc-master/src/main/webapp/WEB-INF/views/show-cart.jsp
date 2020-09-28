@@ -18,42 +18,41 @@
 	<h4>
 		<b> Items in the Kit: </b>
 	</h4>
-	<br>
-	<c:choose>
-		<c:when test="${kitItems==null || kitItems.isEmpty() }">
-			<h4>No Products Selected</h4>
-		</c:when>
-		<c:otherwise>
-			<table border="1" cellspacing="5px" cellpadding="5px">
-				<tr>
-					<th>Kit Id</th>
-					<th>Corona Kit Id</th>
-					<th>Product Id</th>
-					<th>Quantity</th>
-					<th>Amount</th>
-					<th>Action</th>
-				</tr>
-				<c:forEach items="${kitItems}" var="item">
+	<br>	
+		<c:choose>
+			<c:when test="${kitItems==null || kitItems.isEmpty() }">
+				<h4>No Products Selected</h4>
+			</c:when>
+			<c:otherwise>
+				<table border="1" cellspacing="5px" cellpadding="5px">
 					<tr>
-						<td>${item.getId()}</td>
-						<td>${item.getCoronaKitId()}</td>
-						<td>${item.getProductId()}</td>
-						<td>${item.getQuantity()}</td>
-						<td>${item.getAmount()}</td>
-						<td><a
-							href="${pageContext.request.contextPath}/delete/${item.getId()}">
-						</a></td>
+						<th>Kit Id</th>
+						<th>Corona Kit Id</th>
+						<th>Product Id</th>
+						<th>Quantity</th>
+						<th>Amount</th>
+						<th>Action</th>
 					</tr>
-				</c:forEach>
+					<c:forEach items="${kitItems}" var="item">
+						<tr>
+							<td>${item.getId()}</td>
+							<td>${item.getCoronaKitId()}</td>
+							<td>${item.getProductId()}</td>
+							<td>${item.getQuantity()}</td>
+							<td>${item.getAmount()}</td>
+							<td><a
+								href="${pageContext.request.contextPath}/user/delete/${item.getId()}">
+							</a></td>
+						</tr>
+					</c:forEach>
 
-			</table>
+				</table>
 
 
-		</c:otherwise>
-	</c:choose>
-	<br>
+			</c:otherwise>
+		</c:choose>
+		<br>
 
-	<button onclick="/checkout">Checkout</button>
-
+		<a href="${pageContext.request.contextPath}/user/checkout"> CheckOut</a>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="${pageContext.request.contextPath}/header"></jsp:include>
+
 </head>
 <body>
 	<core:if test="${param.error != null}">
@@ -37,6 +37,6 @@
 
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer"></jsp:include>
+	<jsp:include page="${pageContext.request.contextPath}/footer" />
 </footer>
 </html>
