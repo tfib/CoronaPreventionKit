@@ -11,6 +11,6 @@ public class GolbalExceptionController {
 
 	@ExceptionHandler(CoronaException.class)
 	public ModelAndView handleContactException(CoronaException exp) {
-		return new ModelAndView("show-all-item-admin", "errMsg", exp.getMessage());
+		return new ModelAndView("errPage", "errMsg", exp.getMessage());
 	}
 }
