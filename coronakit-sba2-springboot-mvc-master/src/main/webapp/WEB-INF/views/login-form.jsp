@@ -6,17 +6,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-
+<style>
+.error{
+color: red;
+}
+</style>
+</style>
 </head>
 <body>
+<jsp:include page="/header" />
+<br>
 
-<h1> Enter your Credentials</h1> <br> <br>
+<h3> Enter your Credentials</h3> <br> <br>
 
 	<core:if test="${param.error != null}">
-		<i>
+		<b><i class="error">
 			Invalid Credentials!!!
-		</i>
+		</i></b>
 	</core:if>
 
 	<spring-form:form action="${pageContext.request.contextPath}/validate"
@@ -40,6 +46,6 @@
 
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer" />
+	<jsp:include page="/footer" />
 </footer>
 </html>

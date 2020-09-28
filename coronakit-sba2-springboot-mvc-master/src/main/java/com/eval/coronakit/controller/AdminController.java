@@ -35,21 +35,23 @@ public class AdminController {
 	}
 
 	@PostMapping("/product-save")
-	public String productSave(@ModelAttribute("product") ProductMaster product, BindingResult result)
+	public String productSave(@ModelAttribute("product") ProductMaster product, BindingResult result, Model model)
 			throws CoronaException {
-		ModelAndView mv = null;
 		if (result.hasErrors()) {
-			mv = new ModelAndView("add-new-item", "product", product);
+			model.addAttribute("product", product);
+			return "add-new-item";
 		} else {
+			product.setId(1000);
 			if (productService.addNewProduct(product) != null) {
-				mv = new ModelAndView("show-all-item-admin", "products", productService.getAllProducts());
-				mv.addObject("msg", "Product Added Successfully");
+				model.addAttribute("products", productService.getAllProducts());
+				model.addAttribute("msg", "Product Added Successfully");
 			} else {
-				mv = new ModelAndView("show-all-item-admin", "product", productService.getAllProducts());
-				mv.addObject("msg", "Unable to add product");
+				model.addAttribute("products", productService.getAllProducts());
+				model.addAttribute("msg", "Unable to add product");
 			}
+			return "show-all-item-admin";
 		}
-		return mv.getViewName();
+
 	}
 
 	@GetMapping("/product-list")
@@ -59,16 +61,15 @@ public class AdminController {
 	}
 
 	@GetMapping("/product-delete/{productId}")
-	public String productDelete(@PathVariable("productId") int productId) {
-		ModelAndView mv;
+	public String productDelete(@PathVariable("productId") int productId, Model model) {
 		if (productService.deleteProduct(productId) != null) {
-			mv = new ModelAndView("show-all-item-admin", "products", productService.getAllProducts());
-			mv.addObject("msg", "Product Deleted Successfully");
+			model.addAttribute("products", productService.getAllProducts());
+			model.addAttribute("msg", "Product Deleted Successfully");
 		} else {
-			mv = new ModelAndView("show-all-item-admin", "products", productService.getAllProducts());
-			mv.addObject("msg", "Unable to delete product");
+			model.addAttribute("products", productService.getAllProducts());
+			model.addAttribute("msg", "Unable to delete product");
 		}
-		return mv.getViewName();
+		return "show-all-item-admin";
 	}
 
 }

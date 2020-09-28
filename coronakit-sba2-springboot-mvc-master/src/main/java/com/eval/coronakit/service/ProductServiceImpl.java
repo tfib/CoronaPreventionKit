@@ -57,7 +57,5 @@ public class ProductServiceImpl implements ProductService {
 	public Integer getCostById(int productId) {
 		return repository.getCostById(productId);
 	}
-	
-	
 
 }

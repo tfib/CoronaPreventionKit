@@ -6,10 +6,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<style>
+form input{
+position:fixed; 
+right:30px; 
+top:20px
+}
 </head>
 <body>
 
+<jsp:include page="/header" />
+<br> <br>
 	<spring-form:form action="${pageContext.request.contextPath}/logout"
 		method="POST">
 		<input type="submit" value="Logout">
@@ -20,7 +27,9 @@
 		<b> Order Summary: </b>
 	</h4>
 	<br>
-	<label>Shipping Address: ${deliveryAddress} </label>
+	<label><b>Shipping Address</b>: ${deliveryAddress} </label>
+	<br>
+	<br>
 	<br>
 	<c:choose>
 		<c:when test="${kitItems==null || kitItems.isEmpty() }">
@@ -52,6 +61,8 @@
 	<h4>
 		<b>Total Price: ${TotalAmount}</b>
 	</h4>
-
+<footer>
+	<jsp:include page="/footer" />
+</footer>
 </body>
 </html>

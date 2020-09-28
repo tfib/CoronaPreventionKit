@@ -5,11 +5,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-
+<style>
+form input{
+position:fixed; 
+right:30px; 
+top:20px
+}
 </head>
 <body>
-
+<jsp:include page="/header" />
+<br> <br>
 <spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
 <input type="submit" value="Logout">
 </spring-form:form>
@@ -17,10 +22,10 @@
 
 <jsp:include page="${pageContext.request.contextPath}/header" />
 	<a href="${pageContext.request.contextPath}/admin/product-entry">
-		Add New Product</a>
+		Add New Product</a> <BR> <br>
 
-	<c:if test="${errMsg!= null}">
-		<i>${errMsg}</i>
+	<c:if test="${msg!= null}">
+		<i>${msg}</i>
 	</c:if>
 
 	<c:choose>
@@ -53,6 +58,6 @@
 
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer" />
+	<jsp:include page="/footer" />
 </footer>
 </html>

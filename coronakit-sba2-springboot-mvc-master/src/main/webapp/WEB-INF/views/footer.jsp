@@ -3,9 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<style>
+.foot{
+position: absolute;
+bottom: 10px;
+width: 50%;
+border: none;
+
+}
+</style>
 </head>
 <body>
-<h4><b>Contact Us :</b>test@coronapreventionkitportal.com </h4>
+<h4 class='foot'><b>Contact Us :</b>test@coronapreventionkitportal.com </h4>
 </body>
 </html>

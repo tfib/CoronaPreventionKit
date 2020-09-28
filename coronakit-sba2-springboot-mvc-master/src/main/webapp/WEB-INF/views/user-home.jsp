@@ -4,9 +4,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+form input{
+position:fixed; 
+right:30px; 
+top:20px
+}
+</style>
 </head>
 <body>
 <jsp:include page="/header" />
+<br>
+<br>
 <spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
 <input type="submit" value="Logout">
 </spring-form:form>
@@ -18,6 +27,8 @@
 	<br>
 	<a href="${pageContext.request.contextPath}/user/show-list">List All Products</a>
 
-<jsp:include page="/footer" />
+<footer>
+	<jsp:include page="/footer" />
+</footer>
 </body>
 </html>

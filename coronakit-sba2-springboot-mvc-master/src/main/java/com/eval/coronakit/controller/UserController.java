@@ -3,16 +3,23 @@ package com.eval.coronakit.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import com.eval.coronakit.entity.CoronaKit;
 import com.eval.coronakit.entity.KitDetail;
@@ -53,13 +60,12 @@ public class UserController {
 	}
 
 	@RequestMapping("/add-to-cart/{productId}")
-	public String showKit(@PathVariable("productId") int productId) {
-		ModelAndView mv;
+	public String showKit(@PathVariable("productId") int productId, Model model) {
 		KitDetail kitDetail = new KitDetail(new Random().nextInt(100), 1, productId, 1,
 				productService.getCostById(productId));
 		kitDetails.add(kitDetail);
-		mv = new ModelAndView("show-cart", "kitItems", kitDetails);
-		return mv.getViewName();
+		model.addAttribute("kitItems", kitDetails);
+		return "show-cart";
 	}
 
 	@RequestMapping("/checkout")
@@ -88,15 +94,14 @@ public class UserController {
 	}
 
 	@RequestMapping("/delete/{itemId}")
-	public String deleteItem(@PathVariable("itemId") int itemId) {
-		ModelAndView mv;
+	public String deleteItem(@PathVariable("itemId") int itemId, Model model) {
 		for (KitDetail k : kitDetails) {
 			if (k.getId() == itemId) {
 				kitDetails.remove(k);
 				break;
 			}
 		}
-		mv = new ModelAndView("show-cart", "kitItems", kitDetails);
-		return mv.getViewName();
+		model.addAttribute("kitItems", kitDetails);
+		return "show-cart";
 	}
 }

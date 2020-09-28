@@ -4,21 +4,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<style>
+a{
+display: inline-block;
+margin: 30px;
+}
+form input{
+position:fixed; 
+right:30px; 
+top:20px
+}
+</style>
 </head>
 <body>
 <jsp:include page="/header" />
-
+<br> <br>
 <spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
 <input type="submit" value="Logout">
 </spring-form:form>
 
-	<h1>This is Admin dashboard</h1>
+	<h3>This is Admin dashboard</h3>
 
 	<a href="${pageContext.request.contextPath}/admin/product-list">List
 		All Products</a>
-	<br>
-	<br>
 	<a href="${pageContext.request.contextPath}/admin/product-entry">Add
 		New Product</a>
 

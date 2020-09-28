@@ -3,16 +3,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+form input{
+position:fixed; 
+right:30px; 
+top:20px
+}
+</style>
 </head>
 <body>
-<jsp:include page="${pageContext.request.contextPath}/header" />
+<jsp:include page="/header" />
 	<h1>Welcome to Corona-Kit Home...</h1>
 	<hr />
+	<p> Please click on Login button to Continue </p>
 	<a href="${pageContext.request.contextPath}/custom-login"><input
 		type="button" value="Login" /></a>
 	<hr />
 </body>
 <footer>
-	<jsp:include page="${pageContext.request.contextPath}/footer" />
+	<jsp:include page="/footer" />
 </footer>
 </html>

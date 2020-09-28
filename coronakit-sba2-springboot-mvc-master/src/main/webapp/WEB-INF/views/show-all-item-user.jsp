@@ -6,9 +6,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<style>
+form input{
+position:fixed; 
+right:30px; 
+top:20px
+}
+</style>
 </head>
 <body>
+<jsp:include page="/header" />
+<br> <br>
 <spring-form:form action="${pageContext.request.contextPath}/logout" method="POST">
 <input type="submit" value="Logout">
 </spring-form:form>
@@ -47,6 +55,8 @@
 		</c:otherwise>
 
 	</c:choose>
-
+<footer>
+	<jsp:include page="/footer" />
+</footer>
 </body>
 </html>
